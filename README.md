@@ -4,13 +4,13 @@
 
 [React Native] bridging library that integrates WeChat SDKs:
 
-- [x] iOS SDK 1.7.2
-- [x] Android SDK 221
+- [x]  iOS SDK 1.8.2
+- [x]  Android SDK ++
 
 [react-native-wechat] has the following tracking data in the open source world:
 
-| NPM | Dependency | Downloads | Build |
-|-----|------------|-----------|-------|
+| NPM                                  | Dependency                                     | Downloads                                      | Build                                       |
+| ------------------------------------ | ---------------------------------------------- | ---------------------------------------------- | ------------------------------------------- |
 | [![NPM version][npm-image]][npm-url] | [![Dependency Status][david-image]][david-url] | [![Downloads][downloads-image]][downloads-url] | [![Build Status][travis-image]][travis-url] |
 
 ## Table of Contents
@@ -53,15 +53,45 @@ WeChat.registerApp('appid');
 
 This method is only available on iOS.
 
-#### isWXAppInstalled() 
+#### isWXAppInstalled()
 
 - returns {Boolean} if WeChat is installed.
 
 Check if the WeChat app is installed on the device.
 
-#### isWXAppSupportApi()
+#### isWXAppSupportApi() (iOS平台)
 
 - returns {Boolean} Contains the result.
+
+Check if wechat support open url.
+#### isWXAppSupportApi(supportSdk) (Android平台)
+```java
+    //传入对应的字符串判断是否支持,没有找到微信文档,字面意思自己理解
+    public static final int SDK_INT = 620824064;
+    public static final int MIN_SDK_INT = 553713665;
+    public static final int CHECK_TOKEN_SDK_INT = 620824064;
+    public static final int TIMELINE_SUPPORTED_SDK_INT = 553779201;
+    public static final int EMOJI_SUPPORTED_SDK_INT = 553844737;
+    public static final int MUSIC_DATA_URL_SUPPORTED_SDK_INT = 553910273;
+    public static final int PAY_SUPPORTED_SDK_INT = 570425345;
+    public static final int OPENID_SUPPORTED_SDK_INT = 570425345;
+    public static final int FAVORITE_SUPPPORTED_SDK_INT = 570425345;
+    public static final int MESSAGE_ACTION_SUPPPORTED_SDK_INT = 570490883;
+    public static final int SCAN_QRCODE_AUTH_SUPPORTED_SDK_INT = 587268097;
+    public static final int MINIPROGRAM_SUPPORTED_SDK_INT = 620756993;
+    public static final int VIDEO_FILE_SUPPORTED_SDK_INT = 620756996;
+    public static final int SUBSCRIBE_MESSAGE_SUPPORTED_SDK_INT = 620756998;
+    public static final int LAUNCH_MINIPROGRAM_SUPPORTED_SDK_INT = 620757000;
+    public static final int CHOOSE_INVOICE_TILE_SUPPORT_SDK_INT = 620822528;
+    public static final int INVOICE_AUTH_INSERT_SDK_INT = 620823552;
+    public static final int NON_TAX_PAY_SDK_INT = 620823552;
+    public static final int PAY_INSURANCE_SDK_INT = 620823552;
+    public static final int SUBSCRIBE_MINI_PROGRAM_MSG_SUPPORTED_SDK_INT = 620823808;
+    public static final int OFFLINE_PAY_SDK_INT = 620823808;
+    public static final int SEND_TO_SPECIFIED_CONTACT_SDK_INT = 620824064;
+    public static final int OPEN_BUSINESS_WEBVIEW_SDK_INT = 620824064;
+```
+- returns {Boolean}  Contain the result.
 
 Check if wechat support open url.
 
@@ -87,7 +117,7 @@ Send authentication request, and it returns an object with the
 following fields:
 
 | field   | type   | description                         |
-|---------|--------|-------------------------------------|
+| ------- | ------ | ----------------------------------- |
 | errCode | Number | Error Code                          |
 | errStr  | String | Error message if any error occurred |
 | openId  | String |                                     |
@@ -98,7 +128,6 @@ following fields:
 
 #### class `ShareMetadata`
 
-- `title` {String}  title of this message. 
 - `type` {Number} type of this message. Can be {news|text|imageUrl|imageFile|imageResource|video|audio|file}
 - `thumbImage` {String} Thumb image of the message, which can be a uri or a resource id.
 - `description` {String} The description about the sharing.
@@ -117,7 +146,7 @@ following fields:
 Share a `ShareMetadata` message to timeline(朋友圈) and returns:
 
 | name    | type   | description                         |
-|---------|--------|-------------------------------------|
+| ------- | ------ | ----------------------------------- |
 | errCode | Number | 0 if authorization successed        |
 | errStr  | String | Error message if any error occurred |
 
@@ -169,7 +198,7 @@ try {
   let rootPath = fs.DocumentDirectoryPath;
   let savePath = rootPath + '/email-signature-262x100.png';
   console.log(savePath);
-  
+
   /*
    * savePath on iOS may be:
    *  /var/mobile/Containers/Data/Application/B1308E13-35F1-41AB-A20D-3117BE8EE8FE/Documents/email-signature-262x100.png
@@ -288,6 +317,18 @@ catch (e) {
 
 Similar to `shareToTimeline` but sends the message to a friend or chat group.
 
+#### launchMini(params)
+
+- `params` {Object} 打开小程序的参数
+
+  - `userName` {String} 拉起的小程序的username
+
+  - `miniProgramType` {Integer} 拉起小程序的类型. 0-正式版 1-开发版 2-体验版
+
+  - `path` {String} 拉起小程序页面的可带参路径，不填默认拉起小程序首页
+
+    
+
 #### pay(payload)
 
 - `payload` {Object} the payment data
@@ -302,7 +343,7 @@ Similar to `shareToTimeline` but sends the message to a friend or chat group.
 Sends request for proceeding payment, then returns an object:
 
 | name    | type   | description                         |
-|---------|--------|-------------------------------------|
+| ------- | ------ | ----------------------------------- |
 | errCode | Number | 0 if authorization successed        |
 | errStr  | String | Error message if any error occurred |
 
@@ -311,9 +352,6 @@ Sends request for proceeding payment, then returns an object:
 ```sh
 $ npm install react-native-wechat --save
 ```
-## Partners
-
-[React Native Starter Kit](https://reactnativestarter.com/) - is a mobile starter kit that allows your team to fully focus on development of the features that set your product apart from the competitors instead of building your app from scratch.
 
 ## Community
 
@@ -361,3 +399,4 @@ MIT
 [react-native-cn]: https://github.com/reactnativecn
 [WeChat SDK]: https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=1417674108&token=&lang=zh_CN
 [Linking Libraries iOS Guidance]: https://developer.apple.com/library/ios/recipes/xcode_help-project_editor/Articles/AddingaLibrarytoaTarget.html
+
